@@ -18,6 +18,9 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
           
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
@@ -38,7 +41,7 @@ jobs:
           context: .
           push: true
           tags: |
-            tenasi/docker-makepkg_v3:x86_64_v3
+            tenasi/docker-makepkg:x86_64_v3
           build-args: |
             ARCH=x86_64_v3
           
