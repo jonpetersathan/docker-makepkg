@@ -30,7 +30,6 @@ jobs:
           context: .
           push: true
           tags: |
-            cachyos/docker-makepkg:x86_64
             cachyos/docker-makepkg:latest
           build-args: |
             ARCH=x86_64
@@ -42,7 +41,7 @@ jobs:
           context: .
           push: true
           tags: |
-            cachyos/docker-makepkg:x86_64_v3
+            cachyos/docker-makepkg_v3:latest
           build-args: |
             ARCH=x86_64_v3
           platforms: linux/amd64/v3
@@ -53,7 +52,7 @@ jobs:
           context: .
           push: true
           tags: |
-            cachyos/docker-makepkg:x86_64_v4
+            cachyos/docker-makepkg_v4:latest
           build-args: |
             ARCH=x86_64_v4
           platforms: linux/amd64/v4
@@ -64,7 +63,7 @@ jobs:
           context: .
           push: true
           tags: |
-            cachyos/docker-makepkg:x86_64_znver4
+            cachyos/docker-makepkg_znver4:latest
           build-args: |
             ARCH=x86_64_znver4
           platforms: linux/amd64/v4
