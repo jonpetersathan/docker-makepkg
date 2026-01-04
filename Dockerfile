@@ -1,9 +1,13 @@
 FROM archlinux:base-devel
 
+ARG ARCH
+ARG KEYRING_VERSION="20240331-1"
+ARG MIRRORLIST_VERSION="22-1"
+
 # COPY needed files
 COPY run.sh /run.sh
-COPY pacman.conf /etc/pacman.conf
-COPY rust.conf /etc/makepkg.conf.d/rust.conf
+COPY ${ARCH}/pacman.conf /etc/pacman.conf
+COPY ${ARCH}/rust.conf /etc/makepkg.conf.d/rust.conf
 COPY ccache.conf /etc/ccache.conf
 COPY cachyos-mirrorlist /etc/pacman.d/cachyos-mirrorlist
 COPY cachyos-v3-mirrorlist /etc/pacman.d/cachyos-v3-mirrorlist
@@ -13,7 +17,6 @@ COPY mirrorlist /etc/pacman.d/mirrorlist
 
 RUN sudo pacman-key --init && sudo pacman-key --recv-keys F3B607488DB35A47 --keyserver keyserver.ubuntu.com && \
     sudo pacman-key --lsign-key F3B607488DB35A47
-#    sudo pacman -U 'https://mirror.cachyos.org/repo/x86_64/cachyos/cachyos-keyring-20240331-1-any.pkg.tar.zst'
 
 # Generally, refreshing without sync'ing is discouraged, but we've a clean
 # environment here.
@@ -38,10 +41,10 @@ RUN mkdir .gnupg && \
 RUN sudo pacman-key --init && \
     sudo pacman-key --recv-keys F3B607488DB35A47 --keyserver keyserver.ubuntu.com && \
     sudo pacman-key --lsign-key F3B607488DB35A47 && \
-    sudo pacman -U --noconfirm 'https://mirror.cachyos.org/repo/x86_64/cachyos/cachyos-keyring-20240331-1-any.pkg.tar.zst' 'https://mirror.cachyos.org/repo/x86_64/cachyos/cachyos-mirrorlist-22-1-any.pkg.tar.zst' 'https://mirror.cachyos.org/repo/x86_64/cachyos/cachyos-v3-mirrorlist-22-1-any.pkg.tar.zst' 'https://mirror.cachyos.org/repo/x86_64/cachyos/cachyos-v4-mirrorlist-22-1-any.pkg.tar.zst' && \
+    sudo pacman -U --noconfirm "https://mirror.cachyos.org/repo/x86_64/cachyos/cachyos-keyring-${KEYRING_VERSION}-any.pkg.tar.zst" "https://mirror.cachyos.org/repo/x86_64/cachyos/cachyos-mirrorlist-${MIRRORLIST_VERSION}-any.pkg.tar.zst" "https://mirror.cachyos.org/repo/x86_64/cachyos/cachyos-v3-mirrorlist-${MIRRORLIST_VERSION}-any.pkg.tar.zst" "https://mirror.cachyos.org/repo/x86_64/cachyos/cachyos-v4-mirrorlist-${MIRRORLIST_VERSION}-any.pkg.tar.zst" && \
     sudo cachyos-rate-mirrors
 
-COPY makepkg.conf /etc/makepkg.conf
+COPY ${ARCH}/makepkg.conf /etc/makepkg.conf
 
 # Build the package
 WORKDIR /pkg
