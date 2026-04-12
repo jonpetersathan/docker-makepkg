@@ -2,7 +2,7 @@ FROM archlinux:base-devel
 
 ARG ARCH
 ARG KEYRING_VERSION="20240331-1"
-ARG MIRRORLIST_VERSION="22-1"
+ARG MIRRORLIST_VERSION="27-1"
 
 # COPY needed files
 COPY run.sh /run.sh
@@ -13,11 +13,11 @@ COPY cachyos-mirrorlist /etc/pacman.d/cachyos-mirrorlist
 COPY cachyos-v3-mirrorlist /etc/pacman.d/cachyos-v3-mirrorlist
 COPY cachyos-v4-mirrorlist /etc/pacman.d/cachyos-v4-mirrorlist
 COPY mirrorlist /etc/pacman.d/mirrorlist
-# makepkg cannot (and should not) be run as root:
 
 RUN sudo pacman-key --init && sudo pacman-key --recv-keys F3B607488DB35A47 --keyserver keyserver.ubuntu.com && \
     sudo pacman-key --lsign-key F3B607488DB35A47
 
+# makepkg cannot (and should not) be run as root:
 # Generally, refreshing without sync'ing is discouraged, but we've a clean
 # environment here.
 RUN useradd -m notroot && \
